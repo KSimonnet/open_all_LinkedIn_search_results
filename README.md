@@ -1,1 +1,2 @@
-"# open_all_LinkedIn_search_results.js" 
+"# open_all_LinkedIn_search_results.js"
+update
