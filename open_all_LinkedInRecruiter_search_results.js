@@ -1,40 +1,40 @@
 /* 
-in LinkedIn Recruiter, when the results of a search are displayed,
-it only open in new windows the profiles that were not previously viewed.
+in LinkedIn Recruiter, in the search results,
+looping through each profile, loop through each eyeball element (cf. XPath) found on the page.
+If it doesn't contain an eyeball element (i.e. profile not previously viewed), then open profile in a new tab
 */
-function loadAll(){
+
+function checkIfViewed(node_to_be_tested, filter_coll){
+    var this_node = filter_coll.iterateNext();
+    while (this_node) {
+        if (node_to_be_tested.contains(this_node)) {
+            return true;
+        }
+        this_node = filter_coll.iterateNext();
+    }
+};
+
+function storeUrls(){
     var profile_container = document.getElementsByClassName("hp-core-temp profile-list ember-view")[0].getElementsByClassName("profile-list")[0].getElementsByTagName("li");
     var profile_urls_arr = [];
 
     for (let i = 0; i < profile_container.length; i++) {
-        var XPath = '//*[@type="eyeball-icon"]';
-        var coll_eyeball = document.evaluate(XPath, document, null, XPathResult.ANY_TYPE, null); //XPathResult is a set of nodes
-        try {/*  */
-            var this_node = coll_eyeball.iterateNext();
-            while (this_node) {
-                if (profile_container[i].contains(this_node) === true) {
-                //ignore. This profile was viewed already
-                } else {
-                const profile_url = profile_container[i].getElementsByClassName("artdeco-entity-lockup__title")[0].getElementsByTagName("a")[0].href;
-                profile_urls_arr.push(profile_url);
-                }
-                this_node = coll_eyeball.iterateNext();
+        var XPath = './/*[@type="eyeball-icon"]';   //with '.', the querying starts from the context node. '//' is the Recursive Descent Operator that matches elements anywhere in the document tree
+        var eyeball_coll = document.evaluate(XPath, document, null, XPathResult.ANY_TYPE, null); //XPathResult is a set of nodes
+
+        if (checkIfViewed(profile_container[i], eyeball_coll)) {
+            //do nothing
+            } else {
+            const profile_url = profile_container[i].getElementsByClassName("artdeco-entity-lockup__title")[0].getElementsByTagName("a")[0].href;
+            profile_urls_arr.push(profile_url);
             }
-        }
-        catch (e) {
-            alert( 'Error: Document tree modified during iteration ' + e );
-        }
     }
     return profile_urls_arr;
 }
 
-var loadUrls = new Promise(function (resolve) {
-    resolve(loadAll());
+var urls_profiles_not_viewed = new Promise(function (resolve) {
+    resolve(storeUrls());
 });
-loadUrls.then(function (urls_arr) {
-    urls_arr.forEach(elm => window.open(elm)) //console.log(elm);
-});
-
-openAllProfiles.catch(function (e) {
-    alert( 'Error: Document tree modified during iteration ' + e );
+urls_profiles_not_viewed.then(function (urls_arr) {
+    urls_arr.forEach(elm => window.open(elm)) //console.log(elm)
 });
