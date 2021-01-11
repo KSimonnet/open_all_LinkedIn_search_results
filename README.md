@@ -9,7 +9,7 @@ If it's missing (i.e. profile not previously viewed), then open profile in a new
 
 Steps:
 
-1.  -[Text on DOMContentLoaded, initiate script]
+1.  Text on DOMContentLoaded, initiate script
 2.  load HTML collection into a buffer array 
 3.  scroll to each elm to trigger the loading of all subtrees
 4.  get URLs of profiles that were not previously viewed
@@ -23,5 +23,5 @@ It was solved using two different approaches:
 
 ## See also
 
-*   Initial source that was revamped on 9/01/2021: https://www.youtube.com/watch?v=d8gToBvPn3w
+*   Initial code source that was revamped on 9/01/2021: https://www.youtube.com/watch?v=d8gToBvPn3w<br/>
     Author: Andre Bradshaw
