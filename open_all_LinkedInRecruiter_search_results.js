@@ -106,7 +106,7 @@ const subTreeLoaded = new Promise(function (resolve) {
         return profile_urls_arr;
     })
     .then(function (urls_arr) {
-        urls_arr.forEach(elm => console.log(elm))   //window.open(elm)
+        urls_arr.forEach(elm => window.open(elm))
     })
     .catch((error) => {
         console.log(error)
